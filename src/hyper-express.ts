@@ -6,7 +6,7 @@ const fs = require("node:fs");
 import path from "path";
 
 const webserver = new HyperExpress.Server({
-  max_body_length: Number.MAX_SAFE_INTEGER,
+  max_body_length: 1000000000000,
 });
 
 // Create GET route to serve 'Hello World'
@@ -24,7 +24,9 @@ webserver.any("/upload", async (req, res) => {
         
       );
       console.log(pathFile)
+      console.log('halo')
       try {
+        // await field.write(pathFile);
         await pipeline(field.file.stream, fs.createWriteStream(pathFile));
       } catch (err) {
         console.log("error", err);
