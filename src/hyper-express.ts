@@ -1,4 +1,6 @@
 import HyperExpress, { MiddlewareHandler } from "hyper-express";
+const { App, getParts } = require("uWebSockets.js");
+
 const mime = require("mime-types")
 const { v4: uuidv4 } = require('uuid');
 const { pipeline } = require("node:stream/promises");
@@ -17,22 +19,11 @@ webserver.get("/", (req, res) => {
 webserver.any("/upload", async (req, res) => {
   await req.multipart(async (field) => {
     if (field.file) {
-      let pathFile = path.join(
-        "./storage",
-        "images",
-        uuidv4() + path.extname(field.file.name || ''),
-        
-      );
-      console.log(pathFile)
-      console.log('halo')
-      try {
-        // await field.write(pathFile);
-        await pipeline(field.file.stream, fs.createWriteStream(pathFile));
-      } catch (err) {
-        console.log("error", err);
-      }
+      console.log('in stream')
     }
   });
+  
+  console.log('finish')
   res.send("ok");
 });
 
